@@ -35,11 +35,11 @@ class GroceryWebhookSkill(MycroftSkill):
         
         # Todo: validate webhook_url & http_method by checking "" or None
 
-        self.log.info(f"Making a {self.http_method} request to {self.webhook_url} with {item}")
+        self.log.info(f"Making a {self.http_method} request to {self.webhook_url} with '{item}'")
 
         try:
             if self.http_method == "post":
-                requests.post(self.webhook_url, data = {"item" : item})
+                requests.post(self.webhook_url, json = {"item" : item})
             elif self.http_method == "get":
                 requests.get(self.webhook_url, params = {"item" : item})
         except Exception as e:
