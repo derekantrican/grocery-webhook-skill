@@ -27,12 +27,15 @@ class GroceryWebhookSkill(MycroftSkill):
     def on_settings_changed(self):
         self.webhook_url = self.settings.get('webhook_url')
         self.http_method = self.settings.get('http_method')
+        self.log.info(f"Settings changed! \n\tNew method: {self.http_method} \n\tNew webhook: {self.webhook_url}")
 
     @intent_file_handler('add.intent')
     def enquire_new_email(self, message):
         item = message.data.get('item').lower()
         
         # Todo: validate webhook_url & http_method by checking "" or None
+
+        self.log.info(f"Making a {self.http_method} request to {self.webhook_url} with {item}")
 
         if self.http_method == "post":
             requests.post(self.webhook_url, data = item)
