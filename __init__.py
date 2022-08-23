@@ -33,8 +33,6 @@ class GroceryWebhookSkill(MycroftSkill):
     def enquire_new_email(self, message):
         item = message.data.get('item').lower()
         
-        # Todo: validate webhook_url & http_method by checking "" or None
-
         self.log.info(f"Making a {self.http_method} request to {self.webhook_url} with '{item}'")
 
         try:
@@ -42,12 +40,11 @@ class GroceryWebhookSkill(MycroftSkill):
                 requests.post(self.webhook_url, json = {"item" : item})
             elif self.http_method == "get":
                 requests.get(self.webhook_url, params = {"item" : item})
+
+            self.speak_dialog("added", data={"item": item})
         except Exception as e:
             self.log.exception(f"Exception occured when trying to call webhook: {str(e)}")
-
-        # Todo: report any errors
-        self.speak_dialog("added", data={"item": item})
-
+            self.speak_dialog("error")
 
 def create_skill():
     return GroceryWebhookSkill()
