@@ -39,9 +39,9 @@ class GroceryWebhookSkill(MycroftSkill):
 
         try:
             if self.http_method == "post":
-                requests.post(self.webhook_url, data = item)
+                requests.post(self.webhook_url, data = {"item" : item})
             elif self.http_method == "get":
-                requests.get(self.webhook_url, data = item)
+                requests.get(self.webhook_url, params = {"item" : item})
         except Exception as e:
             self.log.exception(f"Exception occured when trying to call webhook: {str(e)}")
 
